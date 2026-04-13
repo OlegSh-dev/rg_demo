@@ -116,3 +116,18 @@ npm run lint
 5. **View Transitions** — направление переходов, morph заголовка, reduced motion.
 6. **Разделение слоёв**: error boundary vs ошибки загрузки данных, `*AsyncState` vs контент.
 
+## Деплой на GitHub Pages
+
+1. Запушить репозиторий в GitHub и убедиться, что основная ветка — `main`.
+2. В настройках репозитория открыть `Settings -> Pages` и выбрать `Source: GitHub Actions`.
+3. После пуша в `main` workflow `Deploy to GitHub Pages` автоматически соберет и выложит `dist`.
+
+Что уже учтено в проекте для Pages:
+
+- В `vite.config.ts` используется `base` из `VITE_BASE_PATH` (в workflow путь подставляется как `/<repo>/`).
+- В `src/main.tsx` у `BrowserRouter` задан `basename={import.meta.env.BASE_URL}`.
+- В workflow после сборки создается `dist/404.html` (копия `index.html`) для корректной работы SPA-маршрутов при прямом открытии URL.
+
+После первого успешного деплоя сайт будет доступен по адресу:
+`https://<github-username>.github.io/<repo-name>/`.
+
