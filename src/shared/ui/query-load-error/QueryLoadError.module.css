@@ -1,0 +1,24 @@
+.error {
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  background: color-mix(in srgb, var(--color-danger, #c00) 12%, transparent);
+  color: var(--color-text);
+}
+
+.error p {
+  margin: 0 0 0.75rem;
+}
+
+.error button {
+  padding: 0.5rem 0.9rem;
+  border-radius: 0.5rem;
+  border: 1px solid color-mix(in srgb, currentColor 25%, transparent);
+  background: var(--color-surface, #fff);
+  color: var(--color-text);
+  cursor: pointer;
+  font: inherit;
+}
+
+.error button:hover {
+  filter: brightness(0.97);
+}

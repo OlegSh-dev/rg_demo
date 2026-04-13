@@ -1,0 +1,212 @@
+:root {
+  color-scheme: light dark;
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    sans-serif;
+
+  --duration-exit: 150ms;
+  --duration-enter: 210ms;
+  --duration-move: 400ms;
+
+  --color-bg: #f5f5f7;
+  --color-text: #1d1d1f;
+  --color-text-secondary: #6e6e73;
+  --color-text-muted: #aeaeb2;
+  --color-border: rgba(0, 0, 0, 0.08);
+  --color-border-strong: rgba(0, 0, 0, 0.12);
+  --color-surface: #ffffff;
+  --color-surface-hover: #fafafa;
+  --color-accent: #0071e3;
+  --color-skeleton: rgba(0, 0, 0, 0.06);
+  --color-skeleton-shine: rgba(0, 0, 0, 0.1);
+}
+
+html[data-theme='dark'] {
+  color-scheme: dark;
+  --color-bg: #000000;
+  --color-text: #f5f5f7;
+  --color-text-secondary: #a1a1a6;
+  --color-text-muted: #636366;
+  --color-border: rgba(255, 255, 255, 0.12);
+  --color-border-strong: rgba(255, 255, 255, 0.18);
+  --color-surface: #1c1c1e;
+  --color-surface-hover: #2c2c2e;
+  --color-accent: #0a84ff;
+  --color-skeleton: rgba(255, 255, 255, 0.08);
+  --color-skeleton-shine: rgba(255, 255, 255, 0.14);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* View transition recipes: opacity без blur — иначе в конце снимка слой с filter резко сменяется живым текстом */
+@keyframes fade-nav {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide {
+  from {
+    translate: var(--slide-offset);
+  }
+  to {
+    translate: 0;
+  }
+}
+
+@keyframes slide-y {
+  from {
+    transform: translateY(var(--slide-y-offset, 10px));
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+::view-transition-old(.nav-forward) {
+  --slide-offset: -60px;
+  animation:
+    var(--duration-exit) ease-in both fade-nav reverse,
+    var(--duration-move) ease-in-out both slide reverse;
+}
+
+::view-transition-new(.nav-forward) {
+  --slide-offset: 60px;
+  animation:
+    var(--duration-enter) ease-out var(--duration-exit) both fade-nav,
+    var(--duration-move) ease-in-out both slide;
+}
+
+::view-transition-old(.nav-back) {
+  --slide-offset: 60px;
+  animation:
+    var(--duration-exit) ease-in both fade-nav reverse,
+    var(--duration-move) ease-in-out both slide reverse;
+}
+
+::view-transition-new(.nav-back) {
+  --slide-offset: -60px;
+  animation:
+    var(--duration-enter) ease-out var(--duration-exit) both fade-nav,
+    var(--duration-move) ease-in-out both slide;
+}
+
+::view-transition-old(.slide-down) {
+  animation:
+    var(--duration-exit) ease-out both fade-nav reverse,
+    var(--duration-exit) ease-out both slide-y reverse;
+}
+
+::view-transition-new(.slide-up) {
+  animation:
+    var(--duration-enter) ease-in var(--duration-exit) both fade-nav,
+    var(--duration-move) ease-in both slide-y;
+}
+
+::view-transition-group(.morph) {
+  animation-duration: var(--duration-move);
+}
+
+::view-transition-image-pair(.morph) {
+  animation-name: via-blur;
+}
+
+@keyframes via-blur {
+  30% {
+    filter: blur(3px);
+  }
+}
+
+/* Shared text: text-morph recipe — старый снимок скрыт, без растрового масштабирования букв */
+::view-transition-group(.text-morph) {
+  animation-duration: var(--duration-move);
+  isolation: isolate;
+  z-index: 50;
+}
+
+::view-transition-old(.text-morph) {
+  display: none;
+}
+
+::view-transition-new(.text-morph) {
+  animation: none;
+  object-fit: none;
+  object-position: left top;
+}
+
+::view-transition-image-pair(.text-morph) {
+  animation: none;
+}
+
+::view-transition-group(site-header) {
+  animation: none;
+  z-index: 100;
+}
+
+.error-boundary-fallback {
+  max-width: 28rem;
+  margin: 4rem auto;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  border-radius: 16px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+}
+
+.error-boundary-fallback__title {
+  margin: 0 0 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.error-boundary-fallback__message {
+  margin: 0 0 1.25rem;
+  font-size: 0.9375rem;
+  color: var(--color-text-secondary);
+}
+
+.error-boundary-fallback__btn {
+  padding: 0.5rem 1.1rem;
+  border-radius: 999px;
+  border: none;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  cursor: pointer;
+  background: var(--color-accent);
+  color: #fff;
+}
+
+.error-boundary-fallback__btn:hover {
+  opacity: 0.92;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+  }
+}

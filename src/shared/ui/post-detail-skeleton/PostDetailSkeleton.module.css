@@ -1,0 +1,58 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.title {
+  height: 2rem;
+  width: 88%;
+  border-radius: 8px;
+  background: linear-gradient(
+    90deg,
+    var(--color-skeleton) 25%,
+    var(--color-skeleton-shine) 50%,
+    var(--color-skeleton) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.2s ease-in-out infinite;
+}
+
+.meta {
+  width: 5rem;
+  height: 0.75rem;
+  border-radius: 4px;
+  background: var(--color-skeleton);
+}
+
+.para,
+.paraShort {
+  border-radius: 6px;
+  background: linear-gradient(
+    90deg,
+    var(--color-skeleton) 25%,
+    var(--color-skeleton-shine) 50%,
+    var(--color-skeleton) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.2s ease-in-out infinite;
+}
+
+.para {
+  height: 0.85rem;
+  width: 100%;
+}
+
+.paraShort {
+  height: 0.85rem;
+  width: 66%;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
